@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bypikhf5vqf0w"]
+
+[ext_resource type="Shader" uid="uid://dt4dmp6joian6" path="res://Pieces/PlayerColorShader.tres" id="1_28yyk"]
+
+[resource]
+resource_local_to_scene = true
+shader = ExtResource("1_28yyk")
+shader_parameter/PlayerColor = Color(0.423529, 0.321569, 0.980392, 1)

@@ -1,0 +1,49 @@
+[gd_scene load_steps=7 format=3 uid="uid://u8l7dpo7sofp"]
+
+[ext_resource type="TileSet" uid="uid://cy7xdgpmase8w" path="res://Tiles.tres" id="1_a6gca"]
+[ext_resource type="Script" path="res://match.gd" id="1_nejia"]
+[ext_resource type="PackedScene" uid="uid://c5hlkfln6q42o" path="res://Pieces/Spearman.tscn" id="3_jro5f"]
+[ext_resource type="Script" path="res://Pointer.gd" id="4_ck6ep"]
+[ext_resource type="Texture2D" uid="uid://h3svus16qdyw" path="res://Marker.png" id="5_ylfje"]
+[ext_resource type="PackedScene" uid="uid://dmps44ddf05ad" path="res://Pieces/King.tscn" id="6_aurgp"]
+
+[node name="Match" type="Node2D"]
+script = ExtResource("1_nejia")
+
+[node name="TileMap" type="TileMap" parent="."]
+unique_name_in_owner = true
+tile_set = ExtResource("1_a6gca")
+format = 2
+layer_0/tile_data = PackedInt32Array(-1, 0, 0, 65535, 0, 1, -65536, 65536, 0, 65534, 65536, 0, 65536, 65536, 0, 1, 65536, 0, -131071, 65536, 0, -196608, 65536, 0, -65538, 65536, 0, 196606, 65536, 0, 131073, 65536, 0, 196608, 65536, 0, 65539, 65536, 0, -65533, 65536, 0, -196605, 65536, 0, -262143, 65536, 0, -327680, 65536, 0, -196610, 65536, 0, -131075, 65536, 0, -3, 65536, 0, 131069, 65536, 0, -65537, 0, 1, -65535, 0, 1, -196607, 0, 1, -327679, 0, 1, -196609, 0, 1, -131074, 0, 1, -2, 0, 1, 131070, 0, 1, 196607, 0, 1, 65537, 0, 1, 196609, 0, 1, 262142, 0, 1, -262142, 0, 1, -131070, 0, 1, 2, 0, 1, 131074, 0, 1, -65532, 0, 1, -65540, 0, 1, 65532, 0, 1, 131071, 0, 0, 0, 0, 0, -131072, 0, 0, -262144, 0, 0, -131073, 0, 0, -262145, 0, 0, -327678, 0, 0, -262146, 0, 1, -196611, 0, 0, -65539, 0, 0, 65533, 0, 0, 196605, 0, 0, 262143, 0, 0, 196610, 0, 0, 3, 0, 0, -131069, 0, 0, -4, 0, 0, 131072, 0, 0, 65538, 0, 0, -65534, 0, 0)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Pointer" type="Marker2D" parent="."]
+script = ExtResource("4_ck6ep")
+
+[node name="Sprite2D" type="Sprite2D" parent="Pointer"]
+modulate = Color(1, 1, 0, 0.368627)
+texture = ExtResource("5_ylfje")
+
+[node name="Debug" type="Label" parent="."]
+unique_name_in_owner = true
+offset_left = -559.0
+offset_top = -310.0
+offset_right = -222.0
+offset_bottom = -246.0
+
+[node name="King" parent="." instance=ExtResource("6_aurgp")]
+position = Vector2(35, 171)
+player_color = Color(0, 0, 1, 1)
+
+[node name="Spearman" parent="." instance=ExtResource("3_jro5f")]
+position = Vector2(291, -20)
+player_color = Color(0, 0, 1, 1)
+
+[node name="King2" parent="." instance=ExtResource("6_aurgp")]
+position = Vector2(31, -209)
+player_color = Color(1, 0, 0, 1)
+
+[node name="Spearman2" parent="." instance=ExtResource("3_jro5f")]
+position = Vector2(-32, -114)
+player_color = Color(1, 0, 0, 1)
