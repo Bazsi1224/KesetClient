@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://u8l7dpo7sofp"]
+[gd_scene load_steps=9 format=3 uid="uid://u8l7dpo7sofp"]
 
 [ext_resource type="TileSet" uid="uid://cy7xdgpmase8w" path="res://Tiles.tres" id="1_a6gca"]
 [ext_resource type="Script" path="res://match.gd" id="1_nejia"]
 [ext_resource type="Script" path="res://NetworkClient.gd" id="2_1akor"]
+[ext_resource type="Script" path="res://SessionFinder.gd" id="2_hu0oy"]
 [ext_resource type="PackedScene" uid="uid://c5hlkfln6q42o" path="res://Pieces/Spearman.tscn" id="3_jro5f"]
 [ext_resource type="Script" path="res://Pointer.gd" id="4_ck6ep"]
 [ext_resource type="Texture2D" uid="uid://h3svus16qdyw" path="res://Marker.png" id="5_ylfje"]
@@ -11,13 +12,20 @@
 [node name="Match" type="Node2D"]
 script = ExtResource("1_nejia")
 
+[node name="SessionFinder" type="Node" parent="."]
+script = ExtResource("2_hu0oy")
+
 [node name="NetworkClient" type="Node" parent="."]
+process_mode = 4
 process_thread_group = 2
 process_thread_group_order = 0
 process_thread_messages = 1
 script = ExtResource("2_1akor")
 
 [node name="AliveTimer" type="Timer" parent="NetworkClient"]
+
+[node name="Timeout" type="Timer" parent="NetworkClient"]
+one_shot = true
 
 [node name="TileMap" type="TileMap" parent="."]
 unique_name_in_owner = true
@@ -58,3 +66,4 @@ position = Vector2(-32, -114)
 player_color = Color(1, 0, 0, 1)
 
 [connection signal="timeout" from="NetworkClient/AliveTimer" to="NetworkClient" method="_on_alive_timer_timeout"]
+[connection signal="timeout" from="NetworkClient/Timeout" to="NetworkClient" method="_on_timeout_timeout"]
