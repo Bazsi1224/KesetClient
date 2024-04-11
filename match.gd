@@ -10,8 +10,8 @@ func _ready():
 			pieces.append( child )
 
 
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	for piece in pieces:
 		piece.tile = %TileMap.local_to_map( piece.global_position )
-
