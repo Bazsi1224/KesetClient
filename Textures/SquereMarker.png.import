@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://h3svus16qdyw"
-path="res://.godot/imported/Marker.png-0c2dfa208bf87e48f39dbf607d9a3577.ctex"
+uid="uid://dvn26vftoicxq"
+path="res://.godot/imported/SquereMarker.png-de36fd929d60df0fb63ec5991b26d1ea.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Marker.png"
-dest_files=["res://.godot/imported/Marker.png-0c2dfa208bf87e48f39dbf607d9a3577.ctex"]
+source_file="res://Textures/SquereMarker.png"
+dest_files=["res://.godot/imported/SquereMarker.png-de36fd929d60df0fb63ec5991b26d1ea.ctex"]
 
 [params]
 

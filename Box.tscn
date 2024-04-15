@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://byorf8jdlq0wv"]
+
+[ext_resource type="Script" path="res://PieceContainer.gd" id="1_fqbin"]
+[ext_resource type="TileSet" uid="uid://dh6bykhxpler4" path="res://SquareTiles.tres" id="2_ifrfb"]
+
+[node name="Box" type="TileMap"]
+position = Vector2(-31, -31)
+tile_set = ExtResource("2_ifrfb")
+format = 2
+layer_0/tile_data = PackedInt32Array(-131073, 0, 0, -131072, 0, 0, -196607, 0, 0, -65535, 0, 0, -1, 0, 0, 0, 0, 0, 131071, 0, 0, 65537, 0, 0, 131072, 0, 0, 262143, 0, 0, 196608, 0, 1, 196609, 0, 0, 131073, 0, 1, 196607, 0, 1, 65536, 0, 1, 1, 0, 1, 65535, 0, 1, -65536, 0, 1, -65537, 0, 1, -196608, 0, 1, -131071, 0, 1)
+script = ExtResource("1_fqbin")

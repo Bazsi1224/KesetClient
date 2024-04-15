@@ -43,8 +43,8 @@ func read_message( message ):
 
 	match( message_object["messageType"] ):
 		"GameState":
+			parse_game_state( message_object["data"] )
 			print("GameState received")
-			pass
 		"Alive":
 			$Timeout.stop()
 			print("Alive received")
@@ -67,3 +67,10 @@ func close_connection():
 	print("Session lost")
 
 
+func parse_game_state( state ):
+	for piece in %Pieces.get_children():
+		piece.queue_free()
+	%RedBox.refresh_content(state["redBox"])
+	%BlueBox.refresh_content(state["blueBox"])
+	
+	
