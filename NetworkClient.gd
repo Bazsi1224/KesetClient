@@ -97,3 +97,21 @@ func parse_move_list( moves ):
 		%MoveMarkers.add_child( marker )
 		marker.global_position = %Board.global_position +  %Board.map_to_local( Vector2i( move["x"], move["y"] ) )
 	pass
+
+
+func move_requested( container, tile ):
+	if %Pointer.hand == null : return
+	
+	var message = '{ "messageType" : "MoveRequested", "data" : {
+		 "piece":
+			{ "container" : "%s", "tile" : { "x": %d, "y": %d } } , 
+		"target":
+			{ "container" : "%s", "tile" : { "x": %d, "y": %d } } } }\r' % [ 
+				%Pointer.hand.container,
+				%Pointer.hand.tile.x,
+				%Pointer.hand.tile.y,
+				container,
+				tile.x, 
+				tile.y ]
+	socket.put_utf8_string(message)
+	

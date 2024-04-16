@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://mflxv8458bkp"]
+
+[ext_resource type="Script" path="res://Pieces/PieceBase.gd" id="1_iyote"]
+[ext_resource type="Material" uid="uid://bypikhf5vqf0w" path="res://Pieces/PlayerColorMaterial.tres" id="2_jq2ga"]
+
+[node name="Piece" type="Node2D"]
+script = ExtResource("1_iyote")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+material = ExtResource("2_jq2ga")

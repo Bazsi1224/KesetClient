@@ -4,6 +4,7 @@ extends Node2D
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$Pointer.piece_selected.connect( $NetworkClient.piece_selected )
+	$Pointer.move_requested.connect( $NetworkClient.move_requested )
 
 
 

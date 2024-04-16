@@ -9,30 +9,23 @@ var is_selected = false
 var container
 var tile
 
-const HEX_SIDES = [ 
-	TileSet.CELL_NEIGHBOR_RIGHT_SIDE, 
-	TileSet.CELL_NEIGHBOR_TOP_RIGHT_SIDE, 
-	TileSet.CELL_NEIGHBOR_BOTTOM_RIGHT_SIDE, 
-	TileSet.CELL_NEIGHBOR_LEFT_SIDE,
-	TileSet.CELL_NEIGHBOR_TOP_LEFT_SIDE,
-	TileSet.CELL_NEIGHBOR_BOTTOM_LEFT_SIDE,
-	 ]
+const PIECE = preload("res://Pieces/Piece.tscn")
 
-const PIECE_SCENES = {
-	"spearman"  : preload("res://Pieces/Spearman.tscn"),
-	"mercenary" : preload("res://Pieces/Mercenary.tscn"),
-	"knight"    : preload("res://Pieces/Knight.tscn"),
-	"thief"     : preload("res://Pieces/Thief.tscn"),
-	"archer"    : preload("res://Pieces/Archer.tscn"),
-	"engineer"  : preload("res://Pieces/Engineer.tscn"),
-	"king"      : preload("res://Pieces/King.tscn"),
+const PIECE_TEXTURES= {
+	"spearman"  : preload("res://Pieces/Spearman.png"),
+	"mercenary" : preload("res://Pieces/Mercenary.png"),
+	"knight"    : preload("res://Pieces/Knight.png"),
+	"thief"     : preload("res://Pieces/Thief.png"),
+	"archer"    : preload("res://Pieces/Archer.png"),
+	"engineer"  : preload("res://Pieces/Engineer.png"),
+	"king"      : preload("res://Pieces/King.png"),
 }
 
 
 static func get_piece( piece_type : String, player_color : Color ):
-	var piece_scene = PIECE_SCENES[piece_type]
-	var piece = PIECE_SCENES[piece_type].instantiate()
+	var piece = PIECE.instantiate()
 	piece.player_color = player_color
+	piece.find_child("Sprite").texture = PIECE_TEXTURES[ piece_type ]
 	return piece
 
 

@@ -5,6 +5,7 @@ var container_name : String
 var hand
 
 signal piece_selected( container, tile )
+signal move_requested( container, tile )
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -17,6 +18,7 @@ func _process(delta):
 	$PieceSprite.visible = hand != null
 	if hand != null : 
 		$PieceSprite.texture = hand.find_child("Sprite").texture
+		$PieceSprite.material.set_shader_parameter( "PlayerColor", hand.player_color )
 
 
 func move_marker():
@@ -72,6 +74,8 @@ func _unhandled_input(event):
 					piece_selected.emit( container_name, tile )
 					hand = piece
 		else:
+			if hand != null:
+				move_requested.emit( container_name, tile )
 			hand = null
 			for child in %MoveMarkers.get_children():
 				child.queue_free()
