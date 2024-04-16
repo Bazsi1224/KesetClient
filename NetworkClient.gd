@@ -44,10 +44,10 @@ func read_message( message ):
 	match( message_object["messageType"] ):
 		"GameState":
 			parse_game_state( message_object["data"] )
-			print("GameState received")
 		"Alive":
 			$Timeout.stop()
-			print("Alive received")
+		"MoveList":
+			parse_move_list( message_object["data"] )
 
 
 func _on_alive_timer_timeout():
@@ -72,5 +72,28 @@ func parse_game_state( state ):
 		piece.queue_free()
 	%RedBox.refresh_content(state["redBox"])
 	%BlueBox.refresh_content(state["blueBox"])
+	%Board.refresh_content(state["board"])
+
+
+func piece_selected( container, tile ):
+	var message = '{ "messageType" : "PieceSelected", "data" : { "container" : "%s", "tile" : { "x": %d, "y": %d } } }\r' % [ container, tile.x, tile.y ]
+	socket.put_utf8_string(message)
+
+
+func parse_move_list( moves ):
+	if %Pointer.hand == null : return
 	
+	if moves["piece"]["container"] != %Pointer.hand.container: return
+	if moves["piece"]["tile"]["x"] != %Pointer.hand.tile.x : return
+	if moves["piece"]["tile"]["y"] != %Pointer.hand.tile.y : return
+
+	for child in %MoveMarkers.get_children():
+		child.queue_free()
 	
+	for move in moves["moves"]:
+		var marker = Sprite2D.new()
+		marker.texture = load( "res://Textures/Light.png" )
+		marker.modulate = Color.GREEN
+		%MoveMarkers.add_child( marker )
+		marker.global_position = %Board.global_position +  %Board.map_to_local( Vector2i( move["x"], move["y"] ) )
+	pass

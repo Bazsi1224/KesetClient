@@ -1,7 +1,10 @@
 extends Marker2D
 
-var tile
+var tile           : Vector2i
+var container_name : String
 var hand
+
+signal piece_selected( container, tile )
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -11,15 +14,18 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	move_marker()
-	tile = %Board.local_to_map( global_position )
+	$PieceSprite.visible = hand != null
+	if hand != null : 
+		$PieceSprite.texture = hand.find_child("Sprite").texture
 
 
 func move_marker():
 	var viewport  = get_viewport()
 	var mouse_pos = viewport.get_mouse_position()
 	mouse_pos -= Vector2( viewport.size.x / 2, viewport.size.y / 2 )
-	
-	%Debug.text = str( mouse_pos )
+
+	container_name = "no container"
+	tile = Vector2i(0 , 0)
 
 	if is_in_container( %RedBox, mouse_pos ):
 		set_marker_position( %RedBox, mouse_pos )
@@ -27,6 +33,8 @@ func move_marker():
 		set_marker_position( %BlueBox, mouse_pos )
 	if is_in_container( %Board, mouse_pos ):
 		set_marker_position( %Board, mouse_pos )
+
+	%Debug.text = str( container_name ) + " " + str( tile )
 
 	visible = (
 		is_in_container( %Board, mouse_pos ) or 
@@ -47,8 +55,9 @@ func is_in_container( container, mouse_pos ):
 func set_marker_position( container, mouse_pos ):
 	$HexSprite.visible = container == %Board
 	$SquareSprite.visible = container != %Board
-	var mouse_tile =  container.local_to_map( mouse_pos - container.global_position  )
-	%Debug.text += str( mouse_tile )
+	var mouse_tile =  container.local_to_map( mouse_pos - container.global_position )
+	tile = mouse_tile
+	container_name = container.container_name
 	global_position = container.to_global(container.map_to_local( mouse_tile ))
 
 
@@ -59,14 +68,10 @@ func _unhandled_input(event):
 			piece.deselect()
 		if event.pressed:
 			for piece in %Pieces.get_children():
-				if piece.tile == tile:
-					piece.select(%Board)
+				if piece.tile == tile and piece.container == container_name:
+					piece_selected.emit( container_name, tile )
 					hand = piece
 		else:
-			if hand != null:
-				var previous_tile =  %Board.local_to_map( hand.global_position )
-				hand.global_position = %Board.map_to_local( tile )
-				%Debug.text = "%s -> %s" % [ str( previous_tile ), str( tile ) ]
-				hand = null
-		
-		
+			hand = null
+			for child in %MoveMarkers.get_children():
+				child.queue_free()

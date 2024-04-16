@@ -3,7 +3,7 @@ extends Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
+	$Pointer.piece_selected.connect( $NetworkClient.piece_selected )
 
 
 
@@ -15,19 +15,20 @@ func _process(_delta):
 	
 	for piece in pieces:
 		used_tiles = %Board.get_used_cells(0)
-		tile = %Board.local_to_map( piece.global_position )
+		tile = %Board.local_to_map( piece.global_position - %Board.global_position )
 		if used_tiles.has( tile ):
 			piece.tile      = tile
 			piece.container = "board"
 			
 		used_tiles = %RedBox.get_used_cells(0)
-		tile = %RedBox.local_to_map( piece.global_position )
-		if used_tiles.has( tile ):
-			piece.tile      = tile
-			piece.container = "blueBox"
-		
-		used_tiles = %BlueBox.get_used_cells(0)
-		tile = %BlueBox.local_to_map( piece.global_position )
+		tile = %RedBox.local_to_map( piece.global_position - %RedBox.global_position )
 		if used_tiles.has( tile ):
 			piece.tile      = tile
 			piece.container = "redBox"
+			
+		
+		used_tiles = %BlueBox.get_used_cells(0)
+		tile = %BlueBox.local_to_map( piece.global_position - %BlueBox.global_position )
+		if used_tiles.has( tile ):
+			piece.tile      = tile
+			piece.container = "blueBox"

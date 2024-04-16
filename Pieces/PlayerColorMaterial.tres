@@ -5,4 +5,4 @@
 [resource]
 resource_local_to_scene = true
 shader = ExtResource("1_28yyk")
-shader_parameter/PlayerColor = Color(0.423529, 0.321569, 0.980392, 1)
+shader_parameter/PlayerColor = Color(0.42, 0.42, 0.42, 1)

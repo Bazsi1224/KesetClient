@@ -2,7 +2,6 @@ extends TileMap
 class_name PieceContainer
 
 @export var container_name : String
-@export var marker_offset : Vector2
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
