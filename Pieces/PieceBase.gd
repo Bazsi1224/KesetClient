@@ -26,6 +26,7 @@ static func get_piece( piece_type : String, player_color : Color ):
 	var piece = PIECE.instantiate()
 	piece.player_color = player_color
 	piece.find_child("Sprite").texture = PIECE_TEXTURES[ piece_type ]
+	piece.find_child("Sprite").material.set_shader_parameter( "PlayerColor", player_color )
 	return piece
 
 

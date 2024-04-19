@@ -73,6 +73,10 @@ func parse_game_state( state ):
 	%RedBox.refresh_content(state["redBox"])
 	%BlueBox.refresh_content(state["blueBox"])
 	%Board.refresh_content(state["board"])
+	if state["actualPlayer"] == "red":
+		%Frame.modulate = Color.RED
+	else:
+		%Frame.modulate = Color.BLUE
 
 
 func piece_selected( container, tile ):

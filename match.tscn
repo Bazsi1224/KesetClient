@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://u8l7dpo7sofp"]
+[gd_scene load_steps=12 format=3 uid="uid://u8l7dpo7sofp"]
 
 [ext_resource type="Script" path="res://match.gd" id="1_nejia"]
 [ext_resource type="Script" path="res://NetworkClient.gd" id="2_1akor"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://dvn26vftoicxq" path="res://Textures/SquereMarker.png" id="8_h88w6"]
 [ext_resource type="PackedScene" uid="uid://byorf8jdlq0wv" path="res://Box.tscn" id="9_b3sc7"]
 [ext_resource type="Material" uid="uid://bypikhf5vqf0w" path="res://Pieces/PlayerColorMaterial.tres" id="10_xyeof"]
+[ext_resource type="Texture2D" uid="uid://1ky3sbpiw04" path="res://Textures/Frame.png" id="11_n7vg8"]
 
 [node name="Match" type="Node2D"]
 script = ExtResource("1_nejia")
@@ -33,8 +34,8 @@ one_shot = true
 
 [node name="Board" parent="." instance=ExtResource("6_tyfun")]
 unique_name_in_owner = true
-position = Vector2(-64, -32)
-layer_0/tile_data = PackedInt32Array(-1, 65536, 0, 65535, 0, 0, -65536, 0, 1, 65534, 0, 1, 65536, 0, 1, 1, 0, 1, -131071, 0, 1, -196608, 0, 1, -65538, 0, 1, 196606, 0, 1, 131073, 0, 1, 196608, 0, 1, 65539, 0, 1, -65533, 0, 1, -196605, 0, 1, -262143, 0, 1, -196610, 0, 1, -3, 0, 1, 131069, 0, 1, -65537, 0, 0, -65535, 0, 0, -196607, 0, 0, -196609, 0, 0, -131074, 0, 0, -2, 0, 0, 131070, 0, 0, 196607, 0, 0, 65537, 0, 0, 196609, 0, 0, 262142, 0, 0, -262142, 0, 0, -131070, 0, 0, 2, 0, 0, 131074, 0, 0, -65532, 0, 0, 65532, 0, 0, 131071, 65536, 0, 0, 65536, 0, -131072, 65536, 0, -262144, 65536, 0, -131073, 65536, 0, -65539, 65536, 0, 65533, 65536, 0, 196605, 65536, 0, 262143, 65536, 0, 196610, 65536, 0, 3, 65536, 0, -131069, 65536, 0, 131072, 65536, 0, 65538, 65536, 0, -65534, 65536, 0, -196606, 65536, 0, 65540, 0, 0, 4, 0, 1, 131075, 65536, 0, 196611, 0, 1, 262145, 0, 1, 262144, 65536, 0, 327678, 0, 1, 327679, 0, 0, 262146, 0, 0)
+position = Vector2(-32, -32)
+layer_0/tile_data = PackedInt32Array(0, 65536, 0, 65537, 65536, 0, -65534, 65536, 0, -131071, 65536, 0, -1, 65536, 0, 131070, 65536, 0, 196604, 65536, 0, 65533, 65536, 0, -65538, 65536, 0, -196608, 65536, 0, -262142, 65536, 0, -196605, 65536, 0, -131068, 65536, 0, 3, 65536, 0, 131074, 65536, 0, 196608, 65536, 0, 262141, 65536, 0, -65535, 0, 1, -131069, 0, 1, 2, 0, 1, 131073, 0, 1, 65536, 0, 1, -196606, 0, 1, -131072, 0, 1, 65535, 0, 1, 196606, 0, 1, 262140, 0, 1, 131069, 0, 1, -2, 0, 1, 327677, 0, 1, 262143, 0, 1, 262144, 0, 1, 65532, 0, 1, 65539, 0, 1, -65532, 0, 1, -196607, 0, 0, -131070, 0, 0, -65536, 0, 0, 1, 0, 0, -65533, 0, 0, 65538, 0, 0, 4, 0, 0, 196609, 0, 0, 327679, 0, 0, 131072, 0, 0, 196607, 65536, 0, 327678, 65536, 0, 262142, 0, 0, 131071, 0, 0, 196605, 0, 0, 65534, 0, 0, -65537, 0, 0, -3, 0, 0, 131068, 0, 0, 327676, 0, 0, -196604, 0, 0, -262140, 0, 1, -262141, 0, 0, -262143, 0, 1, -262144, 0, 0, -131073, 0, 1)
 script = ExtResource("5_vvh0j")
 container_name = "board"
 
@@ -79,6 +80,12 @@ texture = ExtResource("8_h88w6")
 visible = false
 modulate = Color(1, 1, 1, 0.545098)
 material = ExtResource("10_xyeof")
+
+[node name="Frame" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-0.500007, -0.500004)
+scale = Vector2(1.44125, 1.07833)
+texture = ExtResource("11_n7vg8")
 
 [connection signal="timeout" from="NetworkClient/AliveTimer" to="NetworkClient" method="_on_alive_timer_timeout"]
 [connection signal="timeout" from="NetworkClient/Timeout" to="NetworkClient" method="_on_timeout_timeout"]

@@ -27,7 +27,6 @@ func _process(_delta):
 			piece.tile      = tile
 			piece.container = "redBox"
 			
-		
 		used_tiles = %BlueBox.get_used_cells(0)
 		tile = %BlueBox.local_to_map( piece.global_position - %BlueBox.global_position )
 		if used_tiles.has( tile ):
