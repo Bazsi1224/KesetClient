@@ -17,7 +17,7 @@ const PIECE_TEXTURES= {
 	"knight"    : preload("res://Pieces/Knight.png"),
 	"thief"     : preload("res://Pieces/Thief.png"),
 	"archer"    : preload("res://Pieces/Archer.png"),
-	"engineer"  : preload("res://Pieces/Engineer.png"),
+	"doctor"    : preload("res://Pieces/Doctor.png"),
 	"king"      : preload("res://Pieces/King.png"),
 }
 
