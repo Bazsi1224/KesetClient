@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dqyby817y8vpi"]
 
-[ext_resource type="TileSet" uid="uid://cy7xdgpmase8w" path="res://HexTiles.tres" id="1_7o3m0"]
+[ext_resource type="TileSet" uid="uid://cy7xdgpmase8w" path="res://Match/HexTiles.tres" id="1_7o3m0"]
 
 [node name="TileMap" type="TileMap"]
 position = Vector2(-33, 16)
