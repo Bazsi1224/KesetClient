@@ -1,6 +1,6 @@
 extends Node
 var socket = StreamPeerTCP.new()
-var current_match = null
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -18,10 +18,8 @@ func _process(delta):
 		StreamPeerTCP.STATUS_CONNECTED :
 			%OnlineState.text = tr( "Online" )
 			messaging()
-	
-	if current_match != null:
-		current_match.find_child("NetworkClient")._process(delta)
-	
+
+
 
 func messaging():
 	var bytes = socket.get_available_bytes( )
@@ -47,17 +45,19 @@ func read_message( message ):
 			socket.disconnect_from_host()
 			GameVariables.port = message_object["data"]["port"]
 			GameVariables.role = "host"
+			GameVariables.player_color = message_object["data"]["playerColor"]
 			get_tree().change_scene_to_file("res://Match/match.tscn")
 		"JoinPrivateGame":
 			if( !message_object["data"].has("port") ) : return
 			socket.disconnect_from_host()
 			GameVariables.port = message_object["data"]["port"]
 			GameVariables.role = "client"
+			GameVariables.player_color = message_object["data"]["playerColor"]
 			get_tree().change_scene_to_file("res://Match/match.tscn")
 
 
-func start_private_game():
-	var message = '{ "messageType" : "StartPrivateGame", "data" : { } }\r'
+func start_private_game( player_color : String ):
+	var message = '{ "messageType" : "StartPrivateGame", "data" : { "playerColor" : "%s" } }\r' % player_color
 	socket.put_utf8_string(message)
 
 

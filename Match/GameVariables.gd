@@ -2,6 +2,7 @@ extends Node
 
 var port : int
 var role : String
+var player_color : String
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

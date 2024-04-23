@@ -53,12 +53,29 @@ disabled = true
 text = "Play online
 "
 
-[node name="ButtonPrivateGame" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ButtonPrivateGame" type="Button" parent="MarginContainer/VBoxContainer/VBoxContainer2"]
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Start private game
 "
+
+[node name="PrivateSelectedColor" type="OptionButton" parent="MarginContainer/VBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+item_count = 3
+selected = 0
+popup/item_0/text = "Random"
+popup/item_0/id = 0
+popup/item_1/text = "Red"
+popup/item_1/id = 1
+popup/item_2/text = "Blue"
+popup/item_2/id = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -92,6 +109,6 @@ size_flags_horizontal = 4
 text = "Exit
 "
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonPrivateGame" to="." method="_on_button_private_game_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer2/ButtonPrivateGame" to="." method="_on_button_private_game_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/ButtonJoinPrivate" to="." method="_on_button_join_private_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonExit" to="." method="_on_button_exit_pressed"]

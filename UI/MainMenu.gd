@@ -24,7 +24,12 @@ func _on_button_back_pressed():
 
 
 func _on_button_private_game_pressed():
-	$SessionFinder.start_private_game()
+	var player_color = "random"
+	match( %PrivateSelectedColor.selected ) :
+		0: player_color = "random"
+		1: player_color = "red"
+		2: player_color = "blue"
+	$SessionFinder.start_private_game( player_color )
 
 
 func _on_button_join_private_pressed():

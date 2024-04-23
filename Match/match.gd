@@ -6,6 +6,10 @@ func _ready():
 	$Pointer.piece_selected.connect( $NetworkClient.piece_selected )
 	$Pointer.move_requested.connect( $NetworkClient.move_requested )
 
+	if GameVariables.player_color == "red":
+		%Frame.modulate = Color.RED
+	else:
+		%Frame.modulate = Color.BLUE
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -32,3 +36,8 @@ func _process(_delta):
 		if used_tiles.has( tile ):
 			piece.tile      = tile
 			piece.container = "blueBox"
+
+
+func _on_button_back_pressed():
+	$NetworkClient.close_connection()
+	get_tree().change_scene_to_file("res://UI/MainMenu.tscn")
