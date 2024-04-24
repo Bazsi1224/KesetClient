@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://u8l7dpo7sofp"]
+[gd_scene load_steps=13 format=3 uid="uid://u8l7dpo7sofp"]
 
 [ext_resource type="Script" path="res://Match/match.gd" id="1_qjkar"]
 [ext_resource type="Script" path="res://Match/NetworkClient.gd" id="3_fo8ov"]
@@ -13,6 +13,9 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hjrcs"]
 bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_fjb12"]
+font_size = 32
 
 [node name="Match" type="Node2D"]
 script = ExtResource("1_qjkar")
@@ -50,8 +53,9 @@ container_name = "blueBox"
 
 [node name="Debug" type="Label" parent="."]
 unique_name_in_owner = true
-offset_left = -517.0
-offset_top = -302.0
+visible = false
+offset_left = -541.0
+offset_top = -310.0
 offset_right = -180.0
 offset_bottom = -238.0
 
@@ -133,6 +137,28 @@ layout_mode = 2
 [node name="ButtonBack" type="Button" parent="PrivateGameWaitingPanel/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Cancel"
+
+[node name="RedTimeLabel" type="Label" parent="."]
+unique_name_in_owner = true
+offset_left = -490.0
+offset_top = -270.0
+offset_right = -343.0
+offset_bottom = -237.0
+text = "00:00:00
+"
+label_settings = SubResource("LabelSettings_fjb12")
+horizontal_alignment = 1
+
+[node name="BlueTimeLabel" type="Label" parent="."]
+unique_name_in_owner = true
+offset_left = 340.0
+offset_top = -269.0
+offset_right = 487.0
+offset_bottom = -236.0
+text = "00:00:00
+"
+label_settings = SubResource("LabelSettings_fjb12")
+horizontal_alignment = 1
 
 [connection signal="timeout" from="NetworkClient/AliveTimer" to="NetworkClient" method="_on_alive_timer_timeout"]
 [connection signal="timeout" from="NetworkClient/Timeout" to="NetworkClient" method="_on_timeout_timeout"]

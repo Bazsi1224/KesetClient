@@ -50,6 +50,8 @@ func read_message( message ):
 			%PrivateGameWaitingPanel.visible = false
 			parse_game_state( message_object["data"] )
 		"Alive":
+			%RedTimeLabel.text = Time.get_time_string_from_unix_time ( message_object["data"]["timeControl"]["red"] / 1000 )
+			%BlueTimeLabel.text = Time.get_time_string_from_unix_time ( message_object["data"]["timeControl"]["blue"] / 1000 )
 			$Timeout.stop()
 		"MoveList":
 			parse_move_list( message_object["data"] )
