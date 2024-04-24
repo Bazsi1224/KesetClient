@@ -8,7 +8,14 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	if $SessionFinder.online :
+		%ButtonPrivateGame.disabled = false
+		%ButtonJoinPrivate.disabled = false
+		%OnlineState.text = tr( "Online" )
+	else:
+		%ButtonPrivateGame.disabled = true
+		%ButtonJoinPrivate.disabled = true
+		%OnlineState.text = tr( "Offline" )
 
 
 func _on_button_exit_pressed():

@@ -1,6 +1,6 @@
 extends Node
 var socket = StreamPeerTCP.new()
-
+var online : bool
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -11,12 +11,13 @@ func _ready():
 func _process(delta):
 	socket.poll()
 	var status = socket.get_status()
+	
+	online = status == StreamPeerTCP.STATUS_CONNECTED
+	
 	match( status ):
 		StreamPeerTCP.STATUS_NONE :
 			var error = socket.connect_to_host( "localhost", 51224 )
-			%OnlineState.text = tr( "Offline" )
 		StreamPeerTCP.STATUS_CONNECTED :
-			%OnlineState.text = tr( "Online" )
 			messaging()
 
 

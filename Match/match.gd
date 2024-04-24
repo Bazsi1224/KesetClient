@@ -14,6 +14,11 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
+	set_piece_tiles()
+	
+
+
+func set_piece_tiles():
 	var pieces     = $Pieces.get_children()
 	var used_tiles = null
 	var tile       = null
