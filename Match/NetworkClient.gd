@@ -78,10 +78,7 @@ func parse_game_state( state ):
 	%RedBox.refresh_content(state["redBox"])
 	%BlueBox.refresh_content(state["blueBox"])
 	%Board.refresh_content(state["board"])
-	if state["actualPlayer"] == "red":
-		pass
-	else:
-		pass
+
 
 
 func piece_selected( container, tile ):

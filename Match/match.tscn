@@ -138,27 +138,47 @@ layout_mode = 2
 layout_mode = 2
 text = "Cancel"
 
-[node name="RedTimeLabel" type="Label" parent="."]
+[node name="RedPlayerPanel" type="PanelContainer" parent="."]
+offset_left = -513.0
+offset_top = -297.0
+offset_right = -323.0
+offset_bottom = -225.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RedPlayerPanel"]
+layout_mode = 2
+
+[node name="RedTimeLabel" type="Label" parent="RedPlayerPanel/VBoxContainer"]
 unique_name_in_owner = true
-offset_left = -490.0
-offset_top = -270.0
-offset_right = -343.0
-offset_bottom = -237.0
+layout_mode = 2
 text = "00:00:00
 "
 label_settings = SubResource("LabelSettings_fjb12")
 horizontal_alignment = 1
 
-[node name="BlueTimeLabel" type="Label" parent="."]
+[node name="RedPlayerName" type="Label" parent="RedPlayerPanel/VBoxContainer"]
+layout_mode = 2
+text = "Guest"
+
+[node name="BluePlayerPanel" type="PanelContainer" parent="."]
+offset_left = 318.0
+offset_top = -297.0
+offset_right = 508.0
+offset_bottom = -225.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BluePlayerPanel"]
+layout_mode = 2
+
+[node name="BlueTimeLabel" type="Label" parent="BluePlayerPanel/VBoxContainer"]
 unique_name_in_owner = true
-offset_left = 340.0
-offset_top = -269.0
-offset_right = 487.0
-offset_bottom = -236.0
+layout_mode = 2
 text = "00:00:00
 "
 label_settings = SubResource("LabelSettings_fjb12")
 horizontal_alignment = 1
+
+[node name="BluePlayerName" type="Label" parent="BluePlayerPanel/VBoxContainer"]
+layout_mode = 2
+text = "Guest"
 
 [connection signal="timeout" from="NetworkClient/AliveTimer" to="NetworkClient" method="_on_alive_timer_timeout"]
 [connection signal="timeout" from="NetworkClient/Timeout" to="NetworkClient" method="_on_timeout_timeout"]
