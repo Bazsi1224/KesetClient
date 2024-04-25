@@ -38,23 +38,16 @@ func read_message( message ):
 	if message_object == null : return
 	
 	match( message_object["messageType"] ):
-		"SessionStart":
-			socket.disconnect_from_host()
-			GameVariables.port = message_object["data"]["port"]
-			get_tree().change_scene_to_file("res://Match/match.tscn")
-		"StartPrivateGame":
-			socket.disconnect_from_host()
-			GameVariables.port = message_object["data"]["port"]
-			GameVariables.role = "host"
-			GameVariables.player_color = message_object["data"]["playerColor"]
-			get_tree().change_scene_to_file("res://Match/match.tscn")
+		"StartGame":
+			switch_to_match( message_object, "host" )
 		"JoinPrivateGame":
 			if( !message_object["data"].has("port") ) : return
-			socket.disconnect_from_host()
-			GameVariables.port = message_object["data"]["port"]
-			GameVariables.role = "client"
-			GameVariables.player_color = message_object["data"]["playerColor"]
-			get_tree().change_scene_to_file("res://Match/match.tscn")
+			switch_to_match( message_object, "client" )
+
+
+func join_public_game(  ):
+	var message = '{ "messageType" : "JoinPublicGame", "data" : { } }\r'
+	socket.put_utf8_string(message)
 
 
 func start_private_game( player_color : String ):
@@ -66,3 +59,10 @@ func join_private_game( game_id : String ):
 	var message = '{ "messageType" : "JoinPrivateGame", "data" : { "gameId" : "%s" } }\r' % game_id
 	socket.put_utf8_string(message)
 
+
+func switch_to_match( message_object, role ):
+	socket.disconnect_from_host()
+	GameVariables.port = message_object["data"]["port"]
+	GameVariables.role = role
+	GameVariables.player_color = message_object["data"]["playerColor"]
+	get_tree().change_scene_to_file("res://Match/match.tscn")

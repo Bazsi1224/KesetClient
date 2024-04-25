@@ -9,10 +9,12 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if $SessionFinder.online :
+		%ButtonFindGames.disabled = false
 		%ButtonPrivateGame.disabled = false
 		%ButtonJoinPrivate.disabled = false
 		%OnlineState.text = tr( "Online" )
 	else:
+		%ButtonFindGames.disabled = true
 		%ButtonPrivateGame.disabled = true
 		%ButtonJoinPrivate.disabled = true
 		%OnlineState.text = tr( "Offline" )
@@ -20,10 +22,6 @@ func _process(delta):
 
 func _on_button_exit_pressed():
 	get_tree().quit()
-
-
-func _on_button_find_games_pressed():
-	get_tree().change_scene_to_file("res://SessionList.tscn")
 
 
 func _on_button_back_pressed():
@@ -41,3 +39,8 @@ func _on_button_private_game_pressed():
 
 func _on_button_join_private_pressed():
 	$SessionFinder.join_private_game( %JoinGameId.text )
+
+
+func _on_button_find_games_pressed():
+	$SessionFinder.join_public_game( )
+
