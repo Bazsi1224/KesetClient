@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://u8l7dpo7sofp"]
+[gd_scene load_steps=14 format=3 uid="uid://u8l7dpo7sofp"]
 
 [ext_resource type="Script" path="res://Match/match.gd" id="1_qjkar"]
 [ext_resource type="Script" path="res://Match/NetworkClient.gd" id="3_fo8ov"]
@@ -16,6 +16,10 @@ bg_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_fjb12"]
 font_size = 32
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lxx0f"]
+texture = ExtResource("11_hl2fu")
+modulate_color = Color(1, 1, 1, 0)
 
 [node name="Match" type="Node2D"]
 script = ExtResource("1_qjkar")
@@ -139,6 +143,7 @@ layout_mode = 2
 text = "Cancel"
 
 [node name="RedPlayerPanel" type="PanelContainer" parent="."]
+unique_name_in_owner = true
 offset_left = -513.0
 offset_top = -297.0
 offset_right = -323.0
@@ -160,10 +165,12 @@ layout_mode = 2
 text = "Guest"
 
 [node name="BluePlayerPanel" type="PanelContainer" parent="."]
+unique_name_in_owner = true
 offset_left = 318.0
 offset_top = -297.0
 offset_right = 508.0
 offset_bottom = -225.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_lxx0f")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="BluePlayerPanel"]
 layout_mode = 2

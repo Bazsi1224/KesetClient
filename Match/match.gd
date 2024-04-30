@@ -41,3 +41,20 @@ func set_piece_tiles():
 func _on_button_back_pressed():
 	$NetworkClient.close_connection()
 	get_tree().change_scene_to_file("res://UI/MainMenu.tscn")
+
+
+func display_actual_player( actualPlayer ):
+	if actualPlayer == "red":
+		var style_box = StyleBoxFlat.new()
+		style_box.bg_color = Color.WHEAT
+		%RedPlayerPanel.add_theme_stylebox_override( "panel", style_box)
+		style_box = StyleBoxFlat.new()
+		style_box.bg_color = Color.TRANSPARENT
+		%BluePlayerPanel.add_theme_stylebox_override( "panel",style_box )
+	else:
+		var style_box = StyleBoxFlat.new()
+		style_box.bg_color = Color.TRANSPARENT
+		%RedPlayerPanel.add_theme_stylebox_override( "panel", style_box)
+		style_box = StyleBoxFlat.new()
+		style_box.bg_color = Color.WHEAT
+		%BluePlayerPanel.add_theme_stylebox_override( "panel",style_box )

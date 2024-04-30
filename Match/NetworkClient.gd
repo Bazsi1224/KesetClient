@@ -1,6 +1,7 @@
 extends Node
 var socket = StreamPeerTCP.new()
 var user_key : String
+var player_color : String
 var connecting_time = 0
 var online : bool
 
@@ -48,7 +49,8 @@ func read_message( message ):
 		"GameMeta":
 			%GameCode.text = message_object["data"]["gameId"]
 			user_key       = message_object["data"]["player"]["userKey"]
-			if message_object["data"]["player"]["color"] == "red":
+			player_color   = message_object["data"]["player"]["color"]
+			if player_color == "red":
 				%Frame.modulate = Color.RED
 			else:
 				%Frame.modulate = Color.BLUE
@@ -84,7 +86,7 @@ func parse_game_state( state ):
 	%RedBox.refresh_content(state["redBox"])
 	%BlueBox.refresh_content(state["blueBox"])
 	%Board.refresh_content(state["board"])
-
+	$"..".display_actual_player( state["actualPlayer"] )
 
 
 func piece_selected( container, tile ):
