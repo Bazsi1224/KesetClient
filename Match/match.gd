@@ -6,11 +6,6 @@ func _ready():
 	$Pointer.piece_selected.connect( $NetworkClient.piece_selected )
 	$Pointer.move_requested.connect( $NetworkClient.move_requested )
 
-	if GameVariables.player_color == "red":
-		%Frame.modulate = Color.RED
-	else:
-		%Frame.modulate = Color.BLUE
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):

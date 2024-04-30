@@ -1,5 +1,6 @@
 extends Node
 var socket = StreamPeerTCP.new()
+var user_key : String
 var connecting_time = 0
 var online : bool
 
@@ -17,7 +18,7 @@ func _process(delta):
 	
 	match( status ):
 		StreamPeerTCP.STATUS_NONE :
-			var error = socket.connect_to_host( "localhost", GameVariables.port )
+			var error = socket.connect_to_host( "46.29.138.226", GameVariables.port )
 			$AliveTimer.start(1)
 		StreamPeerTCP.STATUS_CONNECTING:
 			connecting_time += delta
@@ -44,8 +45,13 @@ func read_message( message ):
 	if message_object == null : return
 
 	match( message_object["messageType"] ):
-		"GameId":
+		"GameMeta":
 			%GameCode.text = message_object["data"]["gameId"]
+			user_key       = message_object["data"]["player"]["userKey"]
+			if message_object["data"]["player"]["color"] == "red":
+				%Frame.modulate = Color.RED
+			else:
+				%Frame.modulate = Color.BLUE
 		"GameState":
 			%PrivateGameWaitingPanel.visible = false
 			parse_game_state( message_object["data"] )
@@ -58,7 +64,7 @@ func read_message( message ):
 
 
 func _on_alive_timer_timeout():
-	var message = '{ "messageType" : "Alive", "role" : "%s", "data" : {} }\r' % GameVariables.role
+	var message = '{ "messageType" : "Alive", "user" : "%s", "data" : {} }\r' % user_key
 	socket.put_utf8_string(message)
 	$Timeout.start(1)
 
@@ -83,8 +89,8 @@ func parse_game_state( state ):
 
 func piece_selected( container, tile ):
 	var message = '{ "messageType" : "PieceSelected",
-					 "role" : "%s",
-					 "data" : { "container" : "%s", "tile" : { "x": %d, "y": %d } } }\r' % [ GameVariables.role, container, tile.x, tile.y ]
+					 "user" : "%s",
+					 "data" : { "container" : "%s", "tile" : { "x": %d, "y": %d } } }\r' % [ user_key, container, tile.x, tile.y ]
 	socket.put_utf8_string(message)
 
 
@@ -110,12 +116,12 @@ func parse_move_list( moves ):
 func move_requested( container, tile ):
 	if %Pointer.hand == null : return
 	
-	var message = '{ "messageType" : "MoveRequested",  "role" : "%s", "data" : {
+	var message = '{ "messageType" : "MoveRequested",  "user" : "%s", "data" : {
 		 "piece":
 			{ "container" : "%s", "tile" : { "x": %d, "y": %d } } , 
 		"target":
 			{ "container" : "%s", "tile" : { "x": %d, "y": %d } } } }\r' % [ 
-				GameVariables.role,
+				user_key,
 				%Pointer.hand.container,
 				%Pointer.hand.tile.x,
 				%Pointer.hand.tile.y,

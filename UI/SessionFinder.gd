@@ -16,7 +16,7 @@ func _process(delta):
 	
 	match( status ):
 		StreamPeerTCP.STATUS_NONE :
-			var error = socket.connect_to_host( "localhost", 51224 )
+			var error = socket.connect_to_host( "46.29.138.226", 51224 )
 		StreamPeerTCP.STATUS_CONNECTED :
 			messaging()
 
@@ -63,6 +63,4 @@ func join_private_game( game_id : String ):
 func switch_to_match( message_object, role ):
 	socket.disconnect_from_host()
 	GameVariables.port = message_object["data"]["port"]
-	GameVariables.role = role
-	GameVariables.player_color = message_object["data"]["playerColor"]
 	get_tree().change_scene_to_file("res://Match/match.tscn")
