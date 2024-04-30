@@ -97,6 +97,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 placeholder_text = "Private game code"
 alignment = 1
+max_length = 6
 
 [node name="ButtonRules" type="Button" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(500, 0)
@@ -115,4 +116,5 @@ text = "Exit
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonFindGames" to="." method="_on_button_find_games_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer2/ButtonPrivateGame" to="." method="_on_button_private_game_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/ButtonJoinPrivate" to="." method="_on_button_join_private_pressed"]
+[connection signal="text_submitted" from="MarginContainer/VBoxContainer/VBoxContainer/JoinGameId" to="." method="_on_join_game_id_text_submitted"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonExit" to="." method="_on_button_exit_pressed"]

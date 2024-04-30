@@ -58,3 +58,7 @@ func display_actual_player( actualPlayer ):
 		style_box = StyleBoxFlat.new()
 		style_box.bg_color = Color.WHEAT
 		%BluePlayerPanel.add_theme_stylebox_override( "panel",style_box )
+
+
+func _on_button_copy_pressed():
+	DisplayServer.clipboard_set( %GameCode.text )

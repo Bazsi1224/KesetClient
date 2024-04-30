@@ -18,6 +18,9 @@ func _process(delta):
 		%ButtonPrivateGame.disabled = true
 		%ButtonJoinPrivate.disabled = true
 		%OnlineState.text = tr( "Offline" )
+	
+	%JoinGameId.text = %JoinGameId.text.to_upper()
+	%JoinGameId.caret_column = %JoinGameId.text.length()
 
 
 func _on_button_exit_pressed():
@@ -40,7 +43,8 @@ func _on_button_private_game_pressed():
 func _on_button_join_private_pressed():
 	$SessionFinder.join_private_game( %JoinGameId.text )
 
-
 func _on_button_find_games_pressed():
 	$SessionFinder.join_public_game( )
 
+func _on_join_game_id_text_submitted(new_text):
+	$SessionFinder.join_private_game( %JoinGameId.text )

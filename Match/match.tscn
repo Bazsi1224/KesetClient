@@ -134,8 +134,12 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "PFSDCFS"
 
-[node name="Control" type="Control" parent="PrivateGameWaitingPanel/PanelContainer/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 20)
+[node name="ButtonCopy" type="Button" parent="PrivateGameWaitingPanel/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Copy to clipboard"
+
+[node name="Control2" type="Control" parent="PrivateGameWaitingPanel/PanelContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
 [node name="ButtonBack" type="Button" parent="PrivateGameWaitingPanel/PanelContainer/MarginContainer/VBoxContainer"]
@@ -189,4 +193,5 @@ text = "Guest"
 
 [connection signal="timeout" from="NetworkClient/AliveTimer" to="NetworkClient" method="_on_alive_timer_timeout"]
 [connection signal="timeout" from="NetworkClient/Timeout" to="NetworkClient" method="_on_timeout_timeout"]
+[connection signal="pressed" from="PrivateGameWaitingPanel/PanelContainer/MarginContainer/VBoxContainer/ButtonCopy" to="." method="_on_button_copy_pressed"]
 [connection signal="pressed" from="PrivateGameWaitingPanel/PanelContainer/MarginContainer/VBoxContainer/ButtonBack" to="." method="_on_button_back_pressed"]
