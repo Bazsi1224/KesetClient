@@ -1,5 +1,5 @@
 extends Node
-var socket = StreamPeerTCP.new()
+var socket = WebSocketPeer.new()
 var user_key : String
 var player_color : String
 var connecting_time = 0
@@ -13,28 +13,28 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	socket.poll()
-	var status = socket.get_status()
+	var status = socket.get_ready_state()
 	
-	online = status == StreamPeerTCP.STATUS_CONNECTED
+	online = status == WebSocketPeer.STATE_OPEN
 	
 	match( status ):
-		StreamPeerTCP.STATUS_NONE :
-			var error = socket.connect_to_host( "46.29.138.226", GameVariables.port )
+		WebSocketPeer.STATE_CLOSED :
+			var error = socket.connect_to_url( "wss://baldheadgames.hu:" + str( GameVariables.port ) )
 			$AliveTimer.start(1)
-		StreamPeerTCP.STATUS_CONNECTING:
+		WebSocketPeer.STATE_CONNECTING:
 			connecting_time += delta
 			if connecting_time > 5 : 
 				close_connection()
-		StreamPeerTCP.STATUS_CONNECTED :
+		WebSocketPeer.STATE_OPEN :
 			messaging()
-		StreamPeerTCP.STATUS_ERROR:
+		WebSocketPeer.STATE_CLOSING:
 			close_connection()
 
 
 func messaging():
-	var bytes = socket.get_available_bytes( )
+	var bytes = socket.get_available_packet_count( )
 	if bytes == 0 : return
-	var message = socket.get_utf8_string(bytes)
+	var message = socket.get_packet().get_string_from_utf8 ( )
 	var parts = message.split( "\r" )
 	for part in parts:
 		read_message( part )
@@ -50,12 +50,9 @@ func read_message( message ):
 			%GameCode.text = message_object["data"]["gameId"]
 			user_key       = message_object["data"]["player"]["userKey"]
 			player_color   = message_object["data"]["player"]["color"]
-			if player_color == "red":
-				%Frame.modulate = Color.RED
-			else:
-				%Frame.modulate = Color.BLUE
 		"GameState":
 			%PrivateGameWaitingPanel.visible = false
+			%PieceSound.play()
 			parse_game_state( message_object["data"] )
 		"Alive":
 			%RedTimeLabel.text = Time.get_time_string_from_unix_time ( message_object["data"]["timeControl"]["red"] / 1000 )
@@ -67,7 +64,7 @@ func read_message( message ):
 
 func _on_alive_timer_timeout():
 	var message = '{ "messageType" : "Alive", "user" : "%s", "data" : {} }\r' % user_key
-	socket.put_utf8_string(message)
+	socket.send_text(message)
 	$Timeout.start(1)
 
 
@@ -86,14 +83,15 @@ func parse_game_state( state ):
 	%RedBox.refresh_content(state["redBox"])
 	%BlueBox.refresh_content(state["blueBox"])
 	%Board.refresh_content(state["board"])
-	$"..".display_actual_player( state["actualPlayer"] )
+	%MoveCounter.text = str( state["move"] )
+	%ActPlayer.text = tr( state["actualPlayer"] )
 
 
 func piece_selected( container, tile ):
 	var message = '{ "messageType" : "PieceSelected",
 					 "user" : "%s",
 					 "data" : { "container" : "%s", "tile" : { "x": %d, "y": %d } } }\r' % [ user_key, container, tile.x, tile.y ]
-	socket.put_utf8_string(message)
+	socket.send_text(message)
 
 
 func parse_move_list( moves ):
@@ -130,5 +128,5 @@ func move_requested( container, tile ):
 				container,
 				tile.x, 
 				tile.y ]
-	socket.put_utf8_string(message)
+	socket.send_text(message)
 	

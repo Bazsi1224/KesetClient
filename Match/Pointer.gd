@@ -24,7 +24,7 @@ func _process(delta):
 func move_marker():
 	var viewport  = get_viewport()
 	var mouse_pos = viewport.get_mouse_position()
-	mouse_pos -= Vector2( viewport.size.x / 2, viewport.size.y / 2 )
+	mouse_pos -= Vector2( 800, 450 )
 
 	container_name = "no container"
 	tile = Vector2i(0 , 0)
@@ -35,8 +35,6 @@ func move_marker():
 		set_marker_position( %BlueBox, mouse_pos )
 	if is_in_container( %Board, mouse_pos ):
 		set_marker_position( %Board, mouse_pos )
-
-	%Debug.text = str( container_name ) + " " + str( tile )
 
 	visible = (
 		is_in_container( %Board, mouse_pos ) or 

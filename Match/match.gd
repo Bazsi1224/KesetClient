@@ -3,8 +3,8 @@ extends Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$Pointer.piece_selected.connect( $NetworkClient.piece_selected )
-	$Pointer.move_requested.connect( $NetworkClient.move_requested )
+	%Pointer.piece_selected.connect( $NetworkClient.piece_selected )
+	%Pointer.move_requested.connect( $NetworkClient.move_requested )
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -14,7 +14,7 @@ func _process(_delta):
 
 
 func set_piece_tiles():
-	var pieces     = $Pieces.get_children()
+	var pieces     = %Pieces.get_children()
 	var used_tiles = null
 	var tile       = null
 	

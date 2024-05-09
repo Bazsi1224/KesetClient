@@ -1,7 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://u8l7dpo7sofp"]
+[gd_scene load_steps=17 format=3 uid="uid://u8l7dpo7sofp"]
 
 [ext_resource type="Script" path="res://Match/match.gd" id="1_qjkar"]
 [ext_resource type="Script" path="res://Match/NetworkClient.gd" id="3_fo8ov"]
+[ext_resource type="AudioStream" uid="uid://bwg7p7olttuoq" path="res://Sound/chipLay3.wav" id="3_xgs8p"]
+[ext_resource type="Texture2D" uid="uid://baa3yt22ykq5e" path="res://Match/window_green2.png" id="4_m86v5"]
 [ext_resource type="PackedScene" uid="uid://dqyby817y8vpi" path="res://Match/Board.tscn" id="4_v1kyt"]
 [ext_resource type="Script" path="res://Match/PieceContainer.gd" id="5_xfsfk"]
 [ext_resource type="PackedScene" uid="uid://byorf8jdlq0wv" path="res://Match/Box.tscn" id="6_km5j0"]
@@ -11,8 +13,12 @@
 [ext_resource type="Material" uid="uid://bypikhf5vqf0w" path="res://Pieces/PlayerColorMaterial.tres" id="10_lb7c4"]
 [ext_resource type="Texture2D" uid="uid://1ky3sbpiw04" path="res://Textures/Frame.png" id="11_hl2fu"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hjrcs"]
-bg_color = Color(0, 0, 0, 1)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3xeqw"]
+texture = ExtResource("4_m86v5")
+texture_margin_left = 80.0
+texture_margin_top = 80.0
+texture_margin_right = 80.0
+texture_margin_bottom = 80.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_fjb12"]
 font_size = 32
@@ -20,6 +26,9 @@ font_size = 32
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lxx0f"]
 texture = ExtResource("11_hl2fu")
 modulate_color = Color(1, 1, 1, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hjrcs"]
+bg_color = Color(0, 0, 0, 1)
 
 [node name="Match" type="Node2D"]
 script = ExtResource("1_qjkar")
@@ -36,63 +45,179 @@ script = ExtResource("3_fo8ov")
 [node name="Timeout" type="Timer" parent="NetworkClient"]
 one_shot = true
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Sounds" type="Node2D" parent="."]
 
-[node name="Board" parent="." instance=ExtResource("4_v1kyt")]
+[node name="PieceSound" type="AudioStreamPlayer" parent="Sounds"]
 unique_name_in_owner = true
-position = Vector2(-32, -32)
+stream = ExtResource("3_xgs8p")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(2, 0)
+
+[node name="GameArea" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(1600, 900)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -801.0
+offset_top = -451.0
+offset_right = 799.0
+offset_bottom = 449.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(800, 450)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxTexture_3xeqw")
+
+[node name="Board" parent="GameArea" instance=ExtResource("4_v1kyt")]
+unique_name_in_owner = true
+position = Vector2(631, 418)
 layer_0/tile_data = PackedInt32Array(-1, 65536, 0, 65535, 0, 1, -65536, 0, 0, 65534, 0, 0, 65536, 0, 1, 1, 0, 0, -131071, 65536, 0, -196608, 65536, 0, -65538, 65536, 0, 196606, 0, 1, 131073, 0, 1, 196608, 65536, 0, 65539, 0, 1, -65533, 0, 0, -196605, 65536, 0, -262143, 0, 1, -3, 0, 0, 131069, 0, 1, -65537, 0, 0, -65535, 0, 1, -196607, 0, 0, -2, 0, 1, 131070, 65536, 0, 196607, 65536, 0, 65537, 65536, 0, 196609, 0, 0, 262142, 0, 0, -262142, 65536, 0, -131070, 0, 0, 2, 0, 1, 131074, 65536, 0, -65532, 0, 1, 65532, 0, 1, 131071, 0, 0, 0, 65536, 0, -131072, 0, 1, -262144, 0, 0, -131073, 0, 1, 65533, 65536, 0, 196605, 0, 0, 262143, 0, 1, 3, 65536, 0, -131069, 0, 1, 131072, 0, 0, 65538, 0, 0, -65534, 65536, 0, -196606, 0, 1, 196604, 65536, 0, -131068, 65536, 0, 262141, 65536, 0, 262140, 0, 1, 327677, 0, 1, 262144, 0, 1, 4, 0, 0, 327679, 0, 0, 327678, 65536, 0, 131068, 0, 0, 327676, 0, 0, -196604, 0, 0, -262140, 0, 1, -262141, 0, 0)
 script = ExtResource("5_xfsfk")
 container_name = "board"
 
-[node name="RedBox" parent="." instance=ExtResource("6_km5j0")]
+[node name="RedBox" parent="GameArea" instance=ExtResource("6_km5j0")]
 unique_name_in_owner = true
-position = Vector2(-450, -32)
+position = Vector2(213, 418)
 container_name = "redBox"
 
-[node name="BlueBox" parent="." instance=ExtResource("6_km5j0")]
+[node name="RedPlayerPanel" type="PanelContainer" parent="GameArea/RedBox"]
 unique_name_in_owner = true
-position = Vector2(382, -32)
+offset_left = -65.0
+offset_top = -265.0
+offset_right = 125.0
+offset_bottom = -193.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameArea/RedBox/RedPlayerPanel"]
+layout_mode = 2
+
+[node name="RedTimeLabel" type="Label" parent="GameArea/RedBox/RedPlayerPanel/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "00:00:00
+"
+label_settings = SubResource("LabelSettings_fjb12")
+horizontal_alignment = 1
+
+[node name="RedPlayerName" type="Label" parent="GameArea/RedBox/RedPlayerPanel/VBoxContainer"]
+layout_mode = 2
+text = "Guest"
+
+[node name="BlueBox" parent="GameArea" instance=ExtResource("6_km5j0")]
+unique_name_in_owner = true
+position = Vector2(1045, 418)
 container_name = "blueBox"
 
-[node name="Debug" type="Label" parent="."]
+[node name="BluePlayerPanel" type="PanelContainer" parent="GameArea/BlueBox"]
 unique_name_in_owner = true
-visible = false
-offset_left = -541.0
-offset_top = -310.0
-offset_right = -180.0
-offset_bottom = -238.0
+offset_left = -66.0
+offset_top = -265.0
+offset_right = 124.0
+offset_bottom = -193.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_lxx0f")
 
-[node name="Pieces" type="Node2D" parent="."]
-unique_name_in_owner = true
+[node name="VBoxContainer" type="VBoxContainer" parent="GameArea/BlueBox/BluePlayerPanel"]
+layout_mode = 2
 
-[node name="MoveMarkers" type="Node2D" parent="."]
+[node name="BlueTimeLabel" type="Label" parent="GameArea/BlueBox/BluePlayerPanel/VBoxContainer"]
 unique_name_in_owner = true
+layout_mode = 2
+text = "00:00:00
+"
+label_settings = SubResource("LabelSettings_fjb12")
+horizontal_alignment = 1
 
-[node name="Pointer" type="Marker2D" parent="."]
+[node name="BluePlayerName" type="Label" parent="GameArea/BlueBox/BluePlayerPanel/VBoxContainer"]
+layout_mode = 2
+text = "Guest"
+
+[node name="Pieces" type="Node2D" parent="GameArea"]
 unique_name_in_owner = true
+position = Vector2(803, 450)
+
+[node name="MoveMarkers" type="Node2D" parent="GameArea"]
+unique_name_in_owner = true
+position = Vector2(803, 450)
+
+[node name="Pointer" type="Marker2D" parent="GameArea"]
+unique_name_in_owner = true
+position = Vector2(803, 450)
 script = ExtResource("7_urn0l")
 
-[node name="HexSprite" type="Sprite2D" parent="Pointer"]
+[node name="HexSprite" type="Sprite2D" parent="GameArea/Pointer"]
 visible = false
 modulate = Color(1, 0.686275, 0.141176, 0.552941)
 texture = ExtResource("8_p0rod")
 
-[node name="SquareSprite" type="Sprite2D" parent="Pointer"]
+[node name="SquareSprite" type="Sprite2D" parent="GameArea/Pointer"]
 visible = false
 modulate = Color(1, 0.686275, 0.141176, 0.552941)
 texture = ExtResource("9_cu5g1")
 
-[node name="PieceSprite" type="Sprite2D" parent="Pointer"]
+[node name="PieceSprite" type="Sprite2D" parent="GameArea/Pointer"]
 visible = false
 modulate = Color(1, 1, 1, 0.545098)
 material = ExtResource("10_lb7c4")
 
-[node name="Frame" type="Sprite2D" parent="."]
+[node name="PanelContainer" type="PanelContainer" parent="GameArea"]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="MarginContainer" type="MarginContainer" parent="GameArea/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameArea/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="MoveCounterContainer" type="HBoxContainer" parent="GameArea/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="GameArea/PanelContainer/MarginContainer/VBoxContainer/MoveCounterContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Move:"
+
+[node name="MoveCounter" type="Label" parent="GameArea/PanelContainer/MarginContainer/VBoxContainer/MoveCounterContainer"]
 unique_name_in_owner = true
-position = Vector2(-0.500007, -0.500004)
-scale = Vector2(1.44125, 1.07833)
-texture = ExtResource("11_hl2fu")
+layout_mode = 2
+size_flags_horizontal = 3
+text = "1"
+
+[node name="ActPlayerContainer" type="HBoxContainer" parent="GameArea/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="GameArea/PanelContainer/MarginContainer/VBoxContainer/ActPlayerContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Actual Player:"
+
+[node name="ActPlayer" type="Label" parent="GameArea/PanelContainer/MarginContainer/VBoxContainer/ActPlayerContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "1"
+
+[node name="Label" type="Label" parent="GameArea/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Moves:"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="GameArea/PanelContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(250, 500)
+layout_mode = 2
+
+[node name="Button2" type="Button" parent="GameArea/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Offer Draw"
+
+[node name="Button" type="Button" parent="GameArea/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Resign"
 
 [node name="PrivateGameWaitingPanel" type="CenterContainer" parent="."]
 unique_name_in_owner = true
@@ -132,7 +257,7 @@ text = "Game code:
 [node name="GameCode" type="Label" parent="PrivateGameWaitingPanel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "PFSDCFS"
+text = "Game Code"
 
 [node name="ButtonCopy" type="Button" parent="PrivateGameWaitingPanel/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -145,51 +270,6 @@ layout_mode = 2
 [node name="ButtonBack" type="Button" parent="PrivateGameWaitingPanel/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Cancel"
-
-[node name="RedPlayerPanel" type="PanelContainer" parent="."]
-unique_name_in_owner = true
-offset_left = -513.0
-offset_top = -297.0
-offset_right = -323.0
-offset_bottom = -225.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="RedPlayerPanel"]
-layout_mode = 2
-
-[node name="RedTimeLabel" type="Label" parent="RedPlayerPanel/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "00:00:00
-"
-label_settings = SubResource("LabelSettings_fjb12")
-horizontal_alignment = 1
-
-[node name="RedPlayerName" type="Label" parent="RedPlayerPanel/VBoxContainer"]
-layout_mode = 2
-text = "Guest"
-
-[node name="BluePlayerPanel" type="PanelContainer" parent="."]
-unique_name_in_owner = true
-offset_left = 318.0
-offset_top = -297.0
-offset_right = 508.0
-offset_bottom = -225.0
-theme_override_styles/panel = SubResource("StyleBoxTexture_lxx0f")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="BluePlayerPanel"]
-layout_mode = 2
-
-[node name="BlueTimeLabel" type="Label" parent="BluePlayerPanel/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "00:00:00
-"
-label_settings = SubResource("LabelSettings_fjb12")
-horizontal_alignment = 1
-
-[node name="BluePlayerName" type="Label" parent="BluePlayerPanel/VBoxContainer"]
-layout_mode = 2
-text = "Guest"
 
 [connection signal="timeout" from="NetworkClient/AliveTimer" to="NetworkClient" method="_on_alive_timer_timeout"]
 [connection signal="timeout" from="NetworkClient/Timeout" to="NetworkClient" method="_on_timeout_timeout"]
