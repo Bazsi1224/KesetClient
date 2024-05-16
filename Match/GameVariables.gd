@@ -1,6 +1,8 @@
 extends Node
 
 var port : int
+var username : String = 'Guest'
+var session_id : String = ''
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

@@ -4,6 +4,11 @@ var user_key : String
 var player_color : String
 var connecting_time = 0
 var online : bool
+var raw_game_state : String
+var phase : GamePhaseEnum = GamePhaseEnum.WAITING
+
+enum GamePhaseEnum { WAITING, PLAYING, ENDING }
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -48,12 +53,14 @@ func read_message( message ):
 	match( message_object["messageType"] ):
 		"GameMeta":
 			%GameCode.text = message_object["data"]["gameId"]
-			user_key       = message_object["data"]["player"]["userKey"]
 			player_color   = message_object["data"]["player"]["color"]
+			user_key       = message_object["data"]["player"]["userKey"]
 		"GameState":
 			%PrivateGameWaitingPanel.visible = false
-			%PieceSound.play()
-			parse_game_state( message_object["data"] )
+			var recieved_game_state = JSON.stringify( message_object["data"] )
+			if recieved_game_state != raw_game_state:
+				parse_game_state( message_object["data"] )
+				raw_game_state = recieved_game_state
 		"Alive":
 			%RedTimeLabel.text = Time.get_time_string_from_unix_time ( message_object["data"]["timeControl"]["red"] / 1000 )
 			%BlueTimeLabel.text = Time.get_time_string_from_unix_time ( message_object["data"]["timeControl"]["blue"] / 1000 )
@@ -77,7 +84,8 @@ func close_connection():
 	print("Session lost")
 
 
-func parse_game_state( state ):
+func parse_game_state( state : Dictionary ):
+	%PieceSound.play()
 	for piece in %Pieces.get_children():
 		piece.queue_free()
 	%RedBox.refresh_content(state["redBox"])
@@ -85,7 +93,14 @@ func parse_game_state( state ):
 	%Board.refresh_content(state["board"])
 	%MoveCounter.text = str( state["move"] )
 	%ActPlayer.text = tr( state["actualPlayer"] )
-
+	$"..".show_take_markers( state["takeMarkers"] )
+	if state.has("winner"): 
+		%GameResultBoard.visible = true
+		if player_color == state["winner"]:
+			%ResultLabel.text = "You win"
+		else:
+			%ResultLabel.text = "You lost"
+		phase = GamePhaseEnum.ENDING
 
 func piece_selected( container, tile ):
 	var message = '{ "messageType" : "PieceSelected",
@@ -115,6 +130,7 @@ func parse_move_list( moves ):
 
 func move_requested( container, tile ):
 	if %Pointer.hand == null : return
+	if phase != GamePhaseEnum.PLAYING : return
 	
 	var message = '{ "messageType" : "MoveRequested",  "user" : "%s", "data" : {
 		 "piece":

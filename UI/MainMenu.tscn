@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cqcklkrc7l1b1"]
 
 [ext_resource type="Script" path="res://UI/MainMenu.gd" id="1_1ncer"]
-[ext_resource type="Script" path="res://UI/SessionFinder.gd" id="2_vppf8"]
+[ext_resource type="PackedScene" uid="uid://m1audjt0ns08" path="res://UI/UserPanel.tscn" id="2_aetta"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -10,10 +10,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 script = ExtResource("1_1ncer")
-
-[node name="SessionFinder" type="Node" parent="."]
-script = ExtResource("2_vppf8")
 
 [node name="OnlineState" type="Label" parent="."]
 unique_name_in_owner = true
@@ -44,6 +42,19 @@ theme_override_constants/margin_bottom = 50
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 20
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(500, 120)
+layout_mode = 2
+
+[node name="UserPanel" parent="MarginContainer/VBoxContainer/Control" instance=ExtResource("2_aetta")]
+layout_mode = 2
+offset_left = 419.0
+offset_top = 20.0
+offset_right = 1101.0
+offset_bottom = 82.0
+size_flags_horizontal = 4
+size_flags_vertical = 8
 
 [node name="ButtonFindGames" type="Button" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
@@ -116,5 +127,7 @@ text = "Exit
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonFindGames" to="." method="_on_button_find_games_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer2/ButtonPrivateGame" to="." method="_on_button_private_game_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/ButtonJoinPrivate" to="." method="_on_button_join_private_pressed"]
+[connection signal="focus_entered" from="MarginContainer/VBoxContainer/VBoxContainer/JoinGameId" to="." method="_on_focus_entered"]
+[connection signal="focus_exited" from="MarginContainer/VBoxContainer/VBoxContainer/JoinGameId" to="." method="_on_focus_exited"]
 [connection signal="text_submitted" from="MarginContainer/VBoxContainer/VBoxContainer/JoinGameId" to="." method="_on_join_game_id_text_submitted"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonExit" to="." method="_on_button_exit_pressed"]

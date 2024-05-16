@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://u8l7dpo7sofp"]
+[gd_scene load_steps=19 format=3 uid="uid://u8l7dpo7sofp"]
 
 [ext_resource type="Script" path="res://Match/match.gd" id="1_qjkar"]
 [ext_resource type="Script" path="res://Match/NetworkClient.gd" id="3_fo8ov"]
@@ -29,6 +29,12 @@ modulate_color = Color(1, 1, 1, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hjrcs"]
 bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aiogr"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_nnypd"]
+font_size = 32
 
 [node name="Match" type="Node2D"]
 script = ExtResource("1_qjkar")
@@ -77,6 +83,12 @@ position = Vector2(631, 418)
 layer_0/tile_data = PackedInt32Array(-1, 65536, 0, 65535, 0, 1, -65536, 0, 0, 65534, 0, 0, 65536, 0, 1, 1, 0, 0, -131071, 65536, 0, -196608, 65536, 0, -65538, 65536, 0, 196606, 0, 1, 131073, 0, 1, 196608, 65536, 0, 65539, 0, 1, -65533, 0, 0, -196605, 65536, 0, -262143, 0, 1, -3, 0, 0, 131069, 0, 1, -65537, 0, 0, -65535, 0, 1, -196607, 0, 0, -2, 0, 1, 131070, 65536, 0, 196607, 65536, 0, 65537, 65536, 0, 196609, 0, 0, 262142, 0, 0, -262142, 65536, 0, -131070, 0, 0, 2, 0, 1, 131074, 65536, 0, -65532, 0, 1, 65532, 0, 1, 131071, 0, 0, 0, 65536, 0, -131072, 0, 1, -262144, 0, 0, -131073, 0, 1, 65533, 65536, 0, 196605, 0, 0, 262143, 0, 1, 3, 65536, 0, -131069, 0, 1, 131072, 0, 0, 65538, 0, 0, -65534, 65536, 0, -196606, 0, 1, 196604, 65536, 0, -131068, 65536, 0, 262141, 65536, 0, 262140, 0, 1, 327677, 0, 1, 262144, 0, 1, 4, 0, 0, 327679, 0, 0, 327678, 65536, 0, 131068, 0, 0, 327676, 0, 0, -196604, 0, 0, -262140, 0, 1, -262141, 0, 0)
 script = ExtResource("5_xfsfk")
 container_name = "board"
+
+[node name="TakeMarkers" type="Node2D" parent="GameArea/Board"]
+unique_name_in_owner = true
+
+[node name="MoveMarkers" type="Node2D" parent="GameArea/Board"]
+unique_name_in_owner = true
 
 [node name="RedBox" parent="GameArea" instance=ExtResource("6_km5j0")]
 unique_name_in_owner = true
@@ -134,10 +146,6 @@ layout_mode = 2
 text = "Guest"
 
 [node name="Pieces" type="Node2D" parent="GameArea"]
-unique_name_in_owner = true
-position = Vector2(803, 450)
-
-[node name="MoveMarkers" type="Node2D" parent="GameArea"]
 unique_name_in_owner = true
 position = Vector2(803, 450)
 
@@ -271,7 +279,48 @@ layout_mode = 2
 layout_mode = 2
 text = "Cancel"
 
+[node name="GameResultBoard" type="CenterContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+offset_left = -142.0
+offset_top = -119.0
+offset_right = 140.0
+offset_bottom = 117.0
+
+[node name="PanelContainer" type="PanelContainer" parent="GameResultBoard"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_aiogr")
+
+[node name="MarginContainer" type="MarginContainer" parent="GameResultBoard/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameResultBoard/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="GameResultBoard/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "Game end"
+label_settings = SubResource("LabelSettings_nnypd")
+
+[node name="ResultLabel" type="Label" parent="GameResultBoard/PanelContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+text = "RESULT"
+horizontal_alignment = 1
+
+[node name="Button" type="Button" parent="GameResultBoard/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Back To menu
+"
+
 [connection signal="timeout" from="NetworkClient/AliveTimer" to="NetworkClient" method="_on_alive_timer_timeout"]
 [connection signal="timeout" from="NetworkClient/Timeout" to="NetworkClient" method="_on_timeout_timeout"]
 [connection signal="pressed" from="PrivateGameWaitingPanel/PanelContainer/MarginContainer/VBoxContainer/ButtonCopy" to="." method="_on_button_copy_pressed"]
 [connection signal="pressed" from="PrivateGameWaitingPanel/PanelContainer/MarginContainer/VBoxContainer/ButtonBack" to="." method="_on_button_back_pressed"]
+[connection signal="pressed" from="GameResultBoard/PanelContainer/MarginContainer/VBoxContainer/Button" to="." method="_on_button_pressed"]

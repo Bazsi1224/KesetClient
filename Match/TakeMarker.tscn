@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://dmcalbpe3751m"]
+
+[ext_resource type="Texture2D" uid="uid://h3svus16qdyw" path="res://Textures/Marker.png" id="1_av333"]
+
+[node name="TakeMarker" type="Node2D"]
+
+[node name="Marker" type="Sprite2D" parent="."]
+modulate = Color(1, 0, 0, 1)
+texture = ExtResource("1_av333")
