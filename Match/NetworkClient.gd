@@ -6,9 +6,10 @@ var connecting_time = 0
 var online : bool
 var raw_game_state : String
 var phase : GamePhaseEnum = GamePhaseEnum.WAITING
+var login_phase = LoginPhaseEnum.INIT
 
-enum GamePhaseEnum { WAITING, PLAYING, ENDING }
-
+enum GamePhaseEnum { WAITING ,PLAYING, ENDING }
+enum LoginPhaseEnum { INIT, LOGGING_IN, LOGGED_IN }
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -32,6 +33,7 @@ func _process(delta):
 				close_connection()
 		WebSocketPeer.STATE_OPEN :
 			messaging()
+			handle_login()
 		WebSocketPeer.STATE_CLOSING:
 			close_connection()
 
@@ -45,6 +47,12 @@ func messaging():
 		read_message( part )
 
 
+func handle_login():
+	if login_phase == LoginPhaseEnum.INIT && GameVariables.session_id != "":
+		login_phase = LoginPhaseEnum.LOGGING_IN
+		log_in_to_session()
+
+
 func read_message( message ):
 	if message == "" : return
 	var message_object = JSON.parse_string( message )
@@ -53,8 +61,9 @@ func read_message( message ):
 	match( message_object["messageType"] ):
 		"GameMeta":
 			%GameCode.text = message_object["data"]["gameId"]
-			player_color   = message_object["data"]["player"]["color"]
-			user_key       = message_object["data"]["player"]["userKey"]
+			player_color   = message_object["data"]["senderplayer"]["color"]
+			user_key       = message_object["data"]["senderplayer"]["userKey"]
+			phase          = GamePhaseEnum.PLAYING
 		"GameState":
 			%PrivateGameWaitingPanel.visible = false
 			var recieved_game_state = JSON.stringify( message_object["data"] )
@@ -65,6 +74,8 @@ func read_message( message ):
 			%RedTimeLabel.text = Time.get_time_string_from_unix_time ( message_object["data"]["timeControl"]["red"] / 1000 )
 			%BlueTimeLabel.text = Time.get_time_string_from_unix_time ( message_object["data"]["timeControl"]["blue"] / 1000 )
 			$Timeout.stop()
+		"PlayerProfiles":
+			parse_player_profiles( message_object["data"] )
 		"MoveList":
 			parse_move_list( message_object["data"] )
 
@@ -87,7 +98,7 @@ func close_connection():
 func parse_game_state( state : Dictionary ):
 	%PieceSound.play()
 	for piece in %Pieces.get_children():
-		piece.queue_free()
+		piece.marked_for_deletion = true
 	%RedBox.refresh_content(state["redBox"])
 	%BlueBox.refresh_content(state["blueBox"])
 	%Board.refresh_content(state["board"])
@@ -101,6 +112,12 @@ func parse_game_state( state : Dictionary ):
 		else:
 			%ResultLabel.text = "You lost"
 		phase = GamePhaseEnum.ENDING
+	
+	for piece in %Pieces.get_children():
+		if piece.marked_for_deletion:
+			piece.queue_free()
+
+
 
 func piece_selected( container, tile ):
 	var message = '{ "messageType" : "PieceSelected",
@@ -145,4 +162,19 @@ func move_requested( container, tile ):
 				tile.x, 
 				tile.y ]
 	socket.send_text(message)
-	
+
+
+func log_in_to_session():
+	var message = '{ "messageType" : "SessionLogin",  "user" : "%s", "data" : {
+		 "sessionKey" : "%s"} }\r' % [ 
+				user_key,
+				GameVariables.session_id ]
+	socket.send_text(message)
+
+
+func parse_player_profiles( data ):
+	login_phase = LoginPhaseEnum.LOGGED_IN
+	if data.has("blue"):
+		%BluePlayerName.text = "%s (%s)" % [ data["blue"]["username"], data["blue"]["elo"]]
+	if data.has("red"):
+		%RedPlayerName.text = "%s (%s)" % [ data["red"]["username"], data["red"]["elo"]]

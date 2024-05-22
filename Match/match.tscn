@@ -114,6 +114,7 @@ label_settings = SubResource("LabelSettings_fjb12")
 horizontal_alignment = 1
 
 [node name="RedPlayerName" type="Label" parent="GameArea/RedBox/RedPlayerPanel/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Guest"
 
@@ -142,6 +143,7 @@ label_settings = SubResource("LabelSettings_fjb12")
 horizontal_alignment = 1
 
 [node name="BluePlayerName" type="Label" parent="GameArea/BlueBox/BluePlayerPanel/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Guest"
 

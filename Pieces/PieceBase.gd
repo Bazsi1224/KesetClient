@@ -5,6 +5,7 @@ class_name Piece
 
 var markers = []
 var is_selected = false
+var marked_for_deletion : bool
 
 var container
 var tile

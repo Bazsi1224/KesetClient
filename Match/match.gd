@@ -47,7 +47,7 @@ func _on_button_back_pressed():
 func display_actual_player( actualPlayer ):
 	if actualPlayer == "red":
 		var style_box = StyleBoxFlat.new()
-		style_box.bg_color = Color.WHEAT
+		style_box.bg_color = Color.MEDIUM_SEA_GREEN
 		%RedPlayerPanel.add_theme_stylebox_override( "panel", style_box)
 		style_box = StyleBoxFlat.new()
 		style_box.bg_color = Color.TRANSPARENT
@@ -57,7 +57,7 @@ func display_actual_player( actualPlayer ):
 		style_box.bg_color = Color.TRANSPARENT
 		%RedPlayerPanel.add_theme_stylebox_override( "panel", style_box)
 		style_box = StyleBoxFlat.new()
-		style_box.bg_color = Color.WHEAT
+		style_box.bg_color = Color.MEDIUM_SEA_GREEN
 		%BluePlayerPanel.add_theme_stylebox_override( "panel",style_box )
 
 
